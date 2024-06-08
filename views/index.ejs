@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>라즈베리파이를 이용한 홈캠 서비스</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: space-around;
+        align-items: flex-start;
+      }
+
+      .form-container {
+        width: 45%;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>라즈베리파이를 이용한 홈캠 서비스</h1>
+    <br />
+    
+
+      <!-- 로그인 폼 -->
+      <div class="form-container">
+        <h2>로그인</h2>
+        <form id="loginForm">
+          <label for="loginUsername">ID :</label><br />
+          <input
+            type="text"
+            id="loginUsername"
+            name="username"
+            required
+          /><br />
+          <label for="loginPassword">PW :</label><br />
+          <input
+            type="password"
+            id="loginPassword"
+            name="password"
+            required
+          /><br /><br />
+          <button type="submit">로그인</button>
+          
+        </form>
+        <div style="margin-top:10px">
+            <a href="register">회원가입</a>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      let loggedInUser;
+
+     
+      // 로그인 폼 이벤트 리스너
+      document
+        .getElementById('loginForm')
+        .addEventListener('submit', function (event) {
+          event.preventDefault();
+
+          const username = document.getElementById('loginUsername').value;
+          const password = document.getElementById('loginPassword').value;
+
+          fetch('/users/login', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ username, password }),
+          })
+            .then((response) => response.json())
+            .then((data) => {
+              alert(data.message);
+              if (data.user) {
+                loggedInUser = data.user;
+                window.location.href="http://192.168.43.64"
+              }
+            })
+            .catch((error) => console.error('Error:', error));
+        });
+    </script>
+  </body>
+</html>

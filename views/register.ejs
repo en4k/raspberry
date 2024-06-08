@@ -1,0 +1,54 @@
+<html>
+  <div class="form-container">
+    <h1>라즈베리파이를 이용한 홈캠 서비스</h1>
+    <br />
+
+    <h2>회원가입</h2>
+    <form id="registerForm">
+      <label for="registerUsername">ID :</label><br />
+      <input type="text" id="registerUsername" name="username" required /><br />
+      <label for="registerPassword">PW :</label><br />
+      <input
+        type="password"
+        id="registerPassword"
+        name="password"
+        required
+      /><br />
+      <label for="ex1">카메라 위치 : (ex. xx 카메라)</label><br />
+      <input type="text" id="ex1" name="ex1" required /><br />
+      <label for="ex2">카메라 번호 : (ex. x번 카메라)</label><br />
+      <input type="text" id="ex2" name="ex2" required /><br />
+
+      <button type="submit" style="margin-top: 10px">회원가입</button>
+    </form>
+    <div>
+      <a href="/">로그인</a>
+    </div>
+  </div>
+  <script>
+    let loggedInUser;
+
+    // 회원가입 폼 이벤트 리스너
+    document
+      .getElementById('registerForm')
+      .addEventListener('submit', function (event) {
+        event.preventDefault();
+
+        const username = document.getElementById('registerUsername').value;
+        const password = document.getElementById('registerPassword').value;
+        const info1 = document.getElementById('ex1').value;
+        const info2 = document.getElementById('ex2').value;
+
+        fetch('/users/register', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ username, password, info1, info2 }),
+        })
+          .then((response) => response.json())
+          .then((data) => alert(data.message))
+          .catch((error) => console.error('Error:', error));
+      });
+  </script>
+</html>
